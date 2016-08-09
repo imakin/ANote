@@ -11,10 +11,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.math.BigInteger;
+
+import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
 import in.izzulmak.anote.algorithm.Coding;
 import in.izzulmak.anote.mainactivitypack.MainPlaceHolderFragment;
+import in.izzulmak.anote.util.Util;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -103,21 +107,17 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
+    byte [] tempbuffer;
     public void encrypt(View view) {
-        //*
-
-        String password = ((EditText) findViewById(R.id.et_main_password)).
-                getText().toString();
         String data = ((EditText) findViewById(R.id.et_main_data)).
                 getText().toString();
 
-        Coding.setKey(password);
+
         try {
-            byte [] encoded = Coding.encode(data);
+            tempbuffer = Coding.encode(data);
             String display = "";
-            for (byte b:encoded) {
-                display = display+" "+Integer.toHexString(b);
+            for (byte b:tempbuffer) {
+                display = display+String.format("%2x ",(int)(b&0xff));
             }
             ((TextView) findViewById(R.id.tv_main_print)).setText(display);
 
@@ -125,10 +125,27 @@ public class MainActivity extends AppCompatActivity
             ((TextView) findViewById(R.id.tv_main_print)).setText("failure");
             e.printStackTrace();
         }
-        /*
-        //*/
     }
 
     public void decrypt(View view) {
+        String password = ((EditText) findViewById(R.id.et_main_password)).
+                getText().toString();
+//        Coding.setKey(password);
+        ((TextView) findViewById(R.id.tv_main_print2)).setText("faipelure");
+        String display = null;
+        try {
+            display = Coding.decode(tempbuffer);
+            ((TextView) findViewById(R.id.tv_main_print2)).setText(display);
+        }
+        catch (IllegalBlockSizeException e) {e.printStackTrace();}
+        catch (BadPaddingException e) {e.printStackTrace();}
+
+
+    }
+
+    public void setKey(View view) {
+        String password = ((EditText) findViewById(R.id.et_main_password)).
+                getText().toString();
+        Coding.setKey(password);
     }
 }

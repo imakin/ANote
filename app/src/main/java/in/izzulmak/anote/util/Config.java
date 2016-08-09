@@ -1,4 +1,4 @@
-package in.izzulmak.anote.config;
+package in.izzulmak.anote.util;
 
 /**
  * Created by Izzulmakin on 07/08/16.

@@ -1,6 +1,7 @@
 package in.izzulmak.anote.algorithm;
 
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,6 +12,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 /**
  * Created by Izzulmakin on 06/08/16.
@@ -19,6 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class Coding {
     /** the key object */
     private static SecretKeySpec key;
+    private static byte [] initialVector = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 
     /**
      * set the default key for process
@@ -45,8 +48,14 @@ public class Coding {
      */
     public static byte[] encode(String input) throws IllegalBlockSizeException {
         try {
-            Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            c.init(Cipher.ENCRYPT_MODE, key);
+            if (key==null)
+                setKey("default");
+            Cipher c = Cipher.getInstance("AES/CBC/NoPadding");
+            c.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(initialVector));
+            if (input.length()%16!=0) {
+                int n = input.length() + 16 - (input.length()%16);
+                input = String.format("%1$-" + n + "s", input);
+            }
             byte[] data = input.getBytes("UTF-8");
             byte[] result = c.doFinal(data);
             return result;
@@ -56,6 +65,7 @@ public class Coding {
         catch (InvalidKeyException e) {e.printStackTrace();}  //init
         catch (UnsupportedEncodingException e) {e.printStackTrace();} //getBytes
         catch (BadPaddingException e) {e.printStackTrace();}//doFinal (only thrown in decrypting)
+        catch (InvalidAlgorithmParameterException e) {e.printStackTrace();}//init (IV)
         //catch (IllegalBlockSizeException e) {e.printStackTrace();}//doFinal, if failed to process
         return null;
     }
@@ -65,19 +75,20 @@ public class Coding {
      * @param data
      * @return
      */
-    public static String decode(byte[] data) {
+    public static String decode(byte[] data) throws IllegalBlockSizeException, BadPaddingException{
         try {
             Cipher c = Cipher.getInstance("AES/CBC/NoPadding");
-            c.init(Cipher.DECRYPT_MODE,key);
+            c.init(Cipher.DECRYPT_MODE,key, new IvParameterSpec(initialVector));
             byte decrypted[] = c.doFinal(data);
             return new String(decrypted, "UTF-8");
         }
         catch (NoSuchAlgorithmException e) {e.printStackTrace();}//getInstance
         catch (NoSuchPaddingException e) {e.printStackTrace();}//getInstance
         catch (InvalidKeyException e) {e.printStackTrace();}//init
-        catch (BadPaddingException e) {e.printStackTrace();}//doFinal
-        catch (IllegalBlockSizeException e) {e.printStackTrace();}//doFinal
+//        catch (BadPaddingException e) {e.printStackTrace();}//doFinal
+//        catch (IllegalBlockSizeException e) {e.printStackTrace();}//doFinal
         catch (UnsupportedEncodingException e) {e.printStackTrace();}//new String
+        catch (InvalidAlgorithmParameterException e) {e.printStackTrace();}
         return null;
     }
 }

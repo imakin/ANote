@@ -37,9 +37,20 @@
                 android:layout_height="wrap_content"
                 android:text="Decrypt"
                 android:onClick="decrypt"/>
+            <Button
+                android:id="@+id/bt_main_setkey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Key"
+                android:onClick="setKey"/>
         </LinearLayout>
         <TextView
             android:id="@+id/tv_main_print"
+            android:text="Hello"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_main_print2"
             android:text="Hello"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
