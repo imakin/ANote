@@ -6,9 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import in.izzulmak.anote.MainActivity;
 import in.izzulmak.anote.R;
+import in.izzulmak.anote.list.RoomList;
 
 /**
  * Created by Izzulmakin on 31/07/16.
@@ -18,6 +20,7 @@ import in.izzulmak.anote.R;
  * contains view
  */
 public class MainPlaceHolderFragment extends Fragment {
+    public final static int SECTION_LIST = 2;
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -48,7 +51,17 @@ public class MainPlaceHolderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        int section = getArguments().getInt(ARG_SECTION_NUMBER);
+        View rootView;
+        if (section==SECTION_LIST) {
+            rootView = inflater.inflate(R.layout.fragment_list, container, false);
+            RoomList r = RoomList.getRoom(rootView);
+            r.draw();
+        }
+        else {
+            rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        }
+
         return rootView;
     }
 

@@ -21,7 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class Coding {
     /** the key object */
     private static SecretKeySpec key;
-    private static byte [] initialVector = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+    private static byte [] initialVector = {0,1,2,3,4,5,6,7,8,9,12,11,12,13,14,15};
 
     /**
      * set the default key for process

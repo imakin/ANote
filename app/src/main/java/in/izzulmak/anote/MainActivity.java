@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity
     public void decrypt(View view) {
         String password = ((EditText) findViewById(R.id.et_main_password)).
                 getText().toString();
-//        Coding.setKey(password);
         ((TextView) findViewById(R.id.tv_main_print2)).setText("faipelure");
         String display = null;
         try {
