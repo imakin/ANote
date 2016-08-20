@@ -28,7 +28,7 @@ public class Coding {
      * @param password password to generate the key
      */
     public static void setKey(String password) {
-        byte[] bytekey = new byte[0];
+        byte[] bytekey;
         MessageDigest sha = null;
         try {
             bytekey = (password).getBytes("UTF-8");

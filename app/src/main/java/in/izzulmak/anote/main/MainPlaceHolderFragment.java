@@ -1,4 +1,4 @@
-package in.izzulmak.anote.mainactivitypack;
+package in.izzulmak.anote.main;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import in.izzulmak.anote.MainActivity;
 import in.izzulmak.anote.R;
@@ -56,7 +55,7 @@ public class MainPlaceHolderFragment extends Fragment {
         if (section==SECTION_LIST) {
             rootView = inflater.inflate(R.layout.fragment_list, container, false);
             RoomList r = RoomList.getRoom(rootView);
-            r.draw();
+            r.draw();//BUG: this only happens in on create, but in section change later does not draw the list
         }
         else {
             rootView = inflater.inflate(R.layout.fragment_main, container, false);

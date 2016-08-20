@@ -1,5 +1,6 @@
 package in.izzulmak.anote;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
@@ -11,14 +12,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.math.BigInteger;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
 import in.izzulmak.anote.algorithm.Coding;
-import in.izzulmak.anote.mainactivitypack.MainPlaceHolderFragment;
-import in.izzulmak.anote.util.Util;
+import in.izzulmak.anote.main.MainPlaceHolderFragment;
+import in.izzulmak.anote.model.ModelMain;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -46,15 +45,22 @@ public class MainActivity extends AppCompatActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        ModelMain.initDatabase(this);
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+        if (position==2) {
+            gotoConsole(null);
+            return;
+        }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, MainPlaceHolderFragment.newInstance(position + 1, this))
                 .commit();
+
     }
 
     public void onSectionAttached(int number) {
@@ -146,5 +152,14 @@ public class MainActivity extends AppCompatActivity
         String password = ((EditText) findViewById(R.id.et_main_password)).
                 getText().toString();
         Coding.setKey(password);
+    }
+
+    /**
+     * goto Console activity, compatible with onClick
+     * @param view RFU
+     */
+    public void gotoConsole(View view) {
+        Intent mi = new Intent(MainActivity.this, ConsoleActivity.class);
+        MainActivity.this.startActivity(mi);
     }
 }

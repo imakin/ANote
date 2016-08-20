@@ -11,7 +11,8 @@ import in.izzulmak.anote.MainActivity;
 import in.izzulmak.anote.R;
 
 /**
- * Created by pingsan on 10/08/16.
+ * Created by Izzulmakin on 10/08/16.
+ * TODO: RoomList uses new Activity but share the same drawer fragment instead!!
  */
 public class RoomList {
     MainActivity mref;
@@ -24,7 +25,7 @@ public class RoomList {
 
     /**
      * get singleton
-     * @param mref reference to MainActivity
+     * @param containerref reference to this room container view
      * */
     public static RoomList getRoom(View containerref) {
         if (self==null) {

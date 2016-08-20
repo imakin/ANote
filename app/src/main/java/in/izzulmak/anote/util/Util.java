@@ -1,5 +1,10 @@
 package in.izzulmak.anote.util;
 
+import android.content.Context;
+import android.widget.Toast;
+
+import in.izzulmak.anote.MainActivity;
+
 /**
  * Created by pingsan on 08/08/16.
  */
@@ -13,5 +18,13 @@ public class Util {
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
         }
         return new String(hexChars);
+    }
+
+    public static void debugToast(Context contextref, String text)
+    {
+        if (!Config.DEBUG)
+            return;
+        Toast toast = Toast.makeText(contextref.getApplicationContext(),text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
