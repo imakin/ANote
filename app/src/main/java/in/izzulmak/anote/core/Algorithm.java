@@ -1,4 +1,4 @@
-package in.izzulmak.anote.algorithm;
+package in.izzulmak.anote.core;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -11,14 +11,13 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 /**
  * Created by Izzulmakin on 06/08/16.
  * simple. TODO: update it to more secure algorithm with pbkdf-ed key
  */
-public class Coding {
+public class Algorithm {
     /** the key object */
     private static SecretKeySpec key;
     private static byte [] initialVector = {0,1,2,3,4,5,6,7,8,9,12,11,12,13,14,15};
@@ -35,7 +34,7 @@ public class Coding {
             sha = MessageDigest.getInstance("SHA-1");
             bytekey = sha.digest(bytekey);
             bytekey = Arrays.copyOf(bytekey, 16); // use only first 128 bit
-            Coding.key = new SecretKeySpec(bytekey, "AES");
+            Algorithm.key = new SecretKeySpec(bytekey, "AES");
         }
         catch (UnsupportedEncodingException e) {e.printStackTrace();}
         catch (NoSuchAlgorithmException e) {e.printStackTrace();}

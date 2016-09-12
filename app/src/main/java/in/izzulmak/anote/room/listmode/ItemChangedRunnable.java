@@ -2,7 +2,7 @@ package in.izzulmak.anote.room.listmode;
 
 import javax.crypto.IllegalBlockSizeException;
 
-import in.izzulmak.anote.algorithm.Coding;
+import in.izzulmak.anote.core.Algorithm;
 
 /**
  * Created by Izzulmakin on 12/09/16.
@@ -21,7 +21,7 @@ public class ItemChangedRunnable implements Runnable {
     @Override
     public void run() {
         try {
-            listObject.encryptedData = Coding.encode(newString);
+            listObject.encryptedData = Algorithm.encode(newString);
         } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
         }

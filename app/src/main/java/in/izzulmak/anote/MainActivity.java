@@ -15,7 +15,7 @@ import android.widget.TextView;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
-import in.izzulmak.anote.algorithm.Coding;
+import in.izzulmak.anote.core.Algorithm;
 import in.izzulmak.anote.room.main.MainPlaceHolderFragment;
 import in.izzulmak.anote.core.ModelMain;
 import in.izzulmak.anote.room.console.ConsoleActivity;
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity
 
 
         try {
-            tempbuffer = Coding.encode(data);
+            tempbuffer = Algorithm.encode(data);
             String display = "";
             for (byte b:tempbuffer) {
                 display = display+String.format("%2x ",(int)(b&0xff));
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity
         ((TextView) findViewById(R.id.tv_main_print2)).setText("faipelure");
         String display = null;
         try {
-            display = Coding.decode(tempbuffer);
+            display = Algorithm.decode(tempbuffer);
             ((TextView) findViewById(R.id.tv_main_print2)).setText(display);
         }
         catch (IllegalBlockSizeException e) {e.printStackTrace();}
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
     public void setKey(View view) {
         String password = ((EditText) findViewById(R.id.et_main_password)).
                 getText().toString();
-        Coding.setKey(password);
+        Algorithm.setKey(password);
     }
 
     /**

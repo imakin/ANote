@@ -13,7 +13,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
 import in.izzulmak.anote.R;
-import in.izzulmak.anote.algorithm.Coding;
+import in.izzulmak.anote.core.Algorithm;
 
 public class ListModeActivity extends AppCompatActivity {
 
@@ -56,13 +56,13 @@ public class ListModeActivity extends AppCompatActivity {
     public void listModeSetKey(View view) {
         String password = ((EditText) findViewById(R.id.et_list_pasword)).
                 getText().toString();
-        Coding.setKey(password);
+        Algorithm.setKey(password);
         ListObject listItem = ListObject.firstObject;
         while (listItem!=null) {
             EditText et_item = (EditText) listItem.theView;
             if (listItem.encryptedData!=null) {
                 try {
-                    et_item.setText(Coding.decode(listItem.encryptedData).trim());
+                    et_item.setText(Algorithm.decode(listItem.encryptedData).trim());
                 } catch (IllegalBlockSizeException e) {
                     e.printStackTrace();
                 } catch (BadPaddingException e) {
