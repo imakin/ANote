@@ -16,8 +16,11 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
 import in.izzulmak.anote.algorithm.Coding;
-import in.izzulmak.anote.main.MainPlaceHolderFragment;
-import in.izzulmak.anote.model.ModelMain;
+import in.izzulmak.anote.room.main.MainPlaceHolderFragment;
+import in.izzulmak.anote.core.ModelMain;
+import in.izzulmak.anote.room.console.ConsoleActivity;
+import in.izzulmak.anote.room.listmode.ListModeActivity;
+import in.izzulmak.anote.room.main.NavigationDrawerFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -31,6 +34,13 @@ public class MainActivity extends AppCompatActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    /** Section position in navigationDrawerList (home) */
+    public final static int SECTION_HOME = 0;
+    /** Section position in navigationDrawerList (list) */
+    public final static int SECTION_LIST = SECTION_HOME+1;
+    /** Section position in navigationDrawerList (console) */
+    public final static int SECTION_CONSOLE = SECTION_LIST+1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +61,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        if (position==2) {
+        if (position==SECTION_CONSOLE) {
             gotoConsole(null);
             return;
         }
-
+        else if (position==SECTION_LIST)
+        {
+            gotoListMode(null);
+            return;
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, MainPlaceHolderFragment.newInstance(position + 1, this))
@@ -155,11 +169,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * goto Console activity, compatible with onClick
-     * @param view RFU
+     * goto Console activity
+     * @param view RFU compatible with onClick
      */
     public void gotoConsole(View view) {
         Intent mi = new Intent(MainActivity.this, ConsoleActivity.class);
         MainActivity.this.startActivity(mi);
+    }
+
+    /**
+     * Goto ListMode activity
+     * @param view RFU, compatible with onClick
+     */
+    public void gotoListMode(View view) {
+        MainActivity.this.startActivity(new Intent(MainActivity.this, ListModeActivity.class));
     }
 }

@@ -1,9 +1,7 @@
-package in.izzulmak.anote.util;
+package in.izzulmak.anote.core;
 
 import android.content.Context;
 import android.widget.Toast;
-
-import in.izzulmak.anote.MainActivity;
 
 /**
  * Created by pingsan on 08/08/16.

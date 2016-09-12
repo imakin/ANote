@@ -1,4 +1,4 @@
-package in.izzulmak.anote.main;
+package in.izzulmak.anote.room.main;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import in.izzulmak.anote.MainActivity;
 import in.izzulmak.anote.R;
-import in.izzulmak.anote.list.RoomList;
 
 /**
  * Created by Izzulmakin on 31/07/16.
@@ -19,7 +18,7 @@ import in.izzulmak.anote.list.RoomList;
  * contains view
  */
 public class MainPlaceHolderFragment extends Fragment {
-    public final static int SECTION_LIST = 2;
+    public final static int SECTION_LIST = MainActivity.SECTION_LIST+1;
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -52,14 +51,7 @@ public class MainPlaceHolderFragment extends Fragment {
                              Bundle savedInstanceState) {
         int section = getArguments().getInt(ARG_SECTION_NUMBER);
         View rootView;
-        if (section==SECTION_LIST) {
-            rootView = inflater.inflate(R.layout.fragment_list, container, false);
-            RoomList r = RoomList.getRoom(rootView);
-            r.draw();//BUG: this only happens in on create, but in section change later does not draw the list
-        }
-        else {
-            rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        }
+        rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         return rootView;
     }

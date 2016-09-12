@@ -1,4 +1,4 @@
-package in.izzulmak.anote;
+package in.izzulmak.anote.room.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import in.izzulmak.anote.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -251,6 +253,7 @@ public class NavigationDrawerFragment extends Fragment {
             Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }

@@ -1,13 +1,10 @@
-package in.izzulmak.anote.model;
+package in.izzulmak.anote.core;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
 import in.izzulmak.anote.MainActivity;
-import in.izzulmak.anote.util.Config;
-import in.izzulmak.anote.util.Util;
 
 /**
  * Created by izzulmakin on 20/08/16.

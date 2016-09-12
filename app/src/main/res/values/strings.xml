@@ -14,4 +14,5 @@
     <string name="title_activity_console">ConsoleActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_list_mode">ListModeActivity</string>
 </resources>

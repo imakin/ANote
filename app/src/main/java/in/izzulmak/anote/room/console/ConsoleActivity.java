@@ -1,4 +1,4 @@
-package in.izzulmak.anote;
+package in.izzulmak.anote.room.console;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,7 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import in.izzulmak.anote.model.ModelMain;
+import in.izzulmak.anote.R;
+import in.izzulmak.anote.core.ModelMain;
 
 public class ConsoleActivity extends AppCompatActivity {
 
