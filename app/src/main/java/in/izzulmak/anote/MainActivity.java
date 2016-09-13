@@ -16,6 +16,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
 import in.izzulmak.anote.core.Algorithm;
+import in.izzulmak.anote.room.listmode.ListModeModel;
 import in.izzulmak.anote.room.main.MainPlaceHolderFragment;
 import in.izzulmak.anote.core.ModelMain;
 import in.izzulmak.anote.room.console.ConsoleActivity;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         ModelMain.initDatabase(this);
+
     }
 
     @Override

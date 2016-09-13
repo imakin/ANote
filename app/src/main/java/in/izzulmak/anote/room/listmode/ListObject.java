@@ -27,7 +27,7 @@ public class ListObject {
 
     /**
      * create new ListObject and register it to the tail of linked list
-     * @param correspondingEditText the corresponding theView view linked to this data
+     * @param correspondingEditText the corresponding theView view linked to this data. this view setTag will be set to this object
      * @return the object reference to the newly created ListObject
      */
     public static ListObject add(View correspondingEditText) {
@@ -45,7 +45,7 @@ public class ListObject {
     /**
      * create new ListObject and register it to the end of linked list. <br/>
      * To add new object use ListObject.add(View) instead.
-     * @param correspondingEditText the corresponding theView view linked to this data
+     * @param correspondingEditText the corresponding theView view linked to this data. this view setTag will be set to this object
      * @return the object reference to the newly created ListObject
      */
     public ListObject addNext(View correspondingEditText) {
@@ -73,6 +73,23 @@ public class ListObject {
         if (next!=null)
             next.prev = prev;
 
+        //let GC manage the rest
+    }
+
+    /** clear all linked list objects */
+    public static void clearAll() {
+        if (firstObject==null)
+            return;
+        ListObject t = firstObject;
+        while (t.next!=null) {
+            t = t.next;
+        }
+        while (t.prev!=null) {
+            t = t.prev;
+            t.next = null;
+        }
+        firstObject = null;
+        t = null;
         //let GC manage the rest
     }
 }

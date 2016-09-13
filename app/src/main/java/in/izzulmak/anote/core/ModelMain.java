@@ -44,14 +44,45 @@ public class ModelMain {
                             "provisioning(tablename, fields, unique_index, is_created, should_be_created)"
             );
             dbmain.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS tablename ON provisioning (tablename)");
-            provisioningAdd("list", "id text status", "id", false, true);
+            provisioningAddIfNotExist("list", "id text status", "id", false, true);
             provisioningApply();
         }
         dbc_provisioning.close();
     }
 
     /**
-     * Add table to the database through provisioning, applied in the next provisioingApply call
+     * if tablename never registered in provisioning before,
+     * add table to the database through provisioning, applied in the next provisioingApply call.
+     * if tablename aleredy registered before, ignore this command.
+     * To update provisioning use provisioningAdd instead
+     * @see ModelMain.provisioningApply(MainActivity mref)
+     * @throws NullPointerException if dbmain is not initialized yet
+     * @param tablename the tablename string
+     * @param fields the fields in tablename, fields separated by one whitespace
+     * @param unique_index the field name used as unique index, empty string for none
+     * @param is_created the status of the tablename whether it has been created or not
+     * @param should_be_created the status of the tablename whether it should be created or not
+     * @return whether provisioning added or not, return true if added (tablename never registered before)
+     */
+    public static boolean provisioningAddIfNotExist(
+            String tablename,
+            String fields,
+            String unique_index,
+            boolean is_created,
+            boolean should_be_created
+    ) {
+        Cursor dbc_tablename = dbmain.rawQuery(
+                "SELECT tablename FROM provisioning WHERE tablename='"+tablename+"';",null);
+        if (dbc_tablename.getCount()==0) {
+            provisioningAdd(tablename, fields, unique_index, is_created, should_be_created);
+            return true;
+        }
+        return  false;
+    }
+
+    /**
+     * Add table to the database through provisioning, applied in the next provisioingApply call.
+     * if the same tablename found, replace it
      * @see ModelMain.provisioningApply(MainActivity mref)
      * @throws NullPointerException if dbmain is not initialized yet
      * @param tablename the tablename string

@@ -24,7 +24,7 @@ public class ListModeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_mode);
         listObject = new ListObject();
-
+        ListModeModel.init(this);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class ListModeActivity extends AppCompatActivity {
         ListObject item = ListObject.add(et_lastItem);
 
         Button bt_delete = new Button(ll_line.getContext());
-        bt_delete.setTag((Object) et_lastItem);// the delete button tag will be linked to its edit text
+        bt_delete.setTag(et_lastItem);// the delete button tag will be linked to its edit text
         bt_delete.setText("x");
         bt_delete.setMaxWidth(100);
         ll_line.addView(bt_delete);
@@ -111,5 +111,21 @@ public class ListModeActivity extends AppCompatActivity {
                 item.remove();
             }
         });
+    }
+
+    /**
+     * save list to SQLite
+     * @param view
+     */
+    public void listModeSave(View view) {
+        ListModeModel.save();
+    }
+
+    /**
+     * load list from SQLite
+     * @param view
+     */
+    public void listModeLoad(View view) {
+        ListModeModel.load();
     }
 }
