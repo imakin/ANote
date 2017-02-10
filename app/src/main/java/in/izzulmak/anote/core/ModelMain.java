@@ -18,6 +18,8 @@ public class ModelMain {
      * @return SQLiteDatabase reference to the application database
      */
     public static SQLiteDatabase getdb() {
+        if (dbmain==null)
+            dbmain = mref.openOrCreateDatabase("anoteappdb.sqlite", mref.MODE_PRIVATE, null);
         return dbmain;
     }
     /**
@@ -60,7 +62,7 @@ public class ModelMain {
      * @param tablename the tablename string
      * @param fields the fields in tablename, fields separated by one whitespace
      * @param unique_index the field name used as unique index, empty string for none
-     * @param is_created the status of the tablename whether it has been created or not
+     * @param is_created the forced initial status of the tablename whether it has been created or not
      * @param should_be_created the status of the tablename whether it should be created or not
      * @return whether provisioning added or not, return true if added (tablename never registered before)
      */

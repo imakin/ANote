@@ -1,8 +1,10 @@
-package in.izzulmak.anote.room.listmode;
+package in.izzulmak.anote.room.listmode.listeners;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
 import in.izzulmak.anote.core.Algorithm;
+import in.izzulmak.anote.room.listmode.ListObject;
 
 /**
  * Created by Izzulmakin on 12/09/16.
@@ -21,8 +23,14 @@ public class ItemChangedRunnable implements Runnable {
     @Override
     public void run() {
         try {
-            listObject.encryptedData = Algorithm.encode(newString);
+            if (listObject.encryptedJudge==null ||
+                    Algorithm.decode(listObject.encryptedJudge).trim().equals("judge")) {
+                listObject.encryptedData = Algorithm.encode(newString);
+                listObject.encryptedJudge = Algorithm.encode("judge");
+            }
         } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
             e.printStackTrace();
         }
     }

@@ -13,10 +13,11 @@ import in.izzulmak.anote.core.ModelMain;
 public class ListModeModel extends ModelMain {
     private final static int INDEX_ID = 0;
     private final static int INDEX_ENCRYPTEDDATA = 1;
+    private final static int INDEX_ENCRYPTEDJUDGE = 2;
     public static ListModeActivity listModeActivity;
 
     public static final String TABLE_NAME = "listobject";
-    public static final String[] FIELDS = {"id", "encrypteddata"};
+    public static final String[] FIELDS = {"id", "encrypteddata", "encryptedjudge"};
 
     public static void setListModeActivity(ListModeActivity l){
         listModeActivity = l;
@@ -27,7 +28,8 @@ public class ListModeModel extends ModelMain {
      */
     public static void init(ListModeActivity act) {
         listModeActivity = act;
-        provisioningAddIfNotExist(TABLE_NAME, FIELDS[0]+" "+FIELDS[1], FIELDS[0], false, true);
+        //provisioningAddIfNotExist(TABLE_NAME, FIELDS[0]+" "+FIELDS[1]+" "+FIELDS[2], FIELDS[0], false, true);
+        provisioningAdd(TABLE_NAME, FIELDS[0]+" "+FIELDS[1]+" "+FIELDS[2], FIELDS[0], false, true);
         provisioningApply();
     }
 
@@ -38,6 +40,7 @@ public class ListModeModel extends ModelMain {
             listModeActivity.listModeAdd(null);
             ListObject item = (ListObject) listModeActivity.et_lastItem.getTag();
             item.encryptedData = dbc_listObject.getBlob(INDEX_ENCRYPTEDDATA);
+            item.encryptedJudge = dbc_listObject.getBlob(INDEX_ENCRYPTEDJUDGE);
         }
         listModeActivity.listModeSetKey(null);
     }
@@ -49,8 +52,12 @@ public class ListModeModel extends ModelMain {
             getdb().delete(TABLE_NAME, null, null);
             while (t != null) {
                 ContentValues v = new ContentValues();
-                v.put(FIELDS[0], t.id);
-                v.put(FIELDS[1], t.encryptedData);
+                v.put(FIELDS[INDEX_ID],
+                        t.id);
+                v.put(FIELDS[INDEX_ENCRYPTEDDATA],
+                        t.encryptedData);
+                v.put(FIELDS[INDEX_ENCRYPTEDJUDGE],
+                        t.encryptedJudge);
                 getdb().insert(TABLE_NAME, null, v);
                 t = t.next;
             }

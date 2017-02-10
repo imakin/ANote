@@ -2,6 +2,7 @@ package in.izzulmak.anote.room.console;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import in.izzulmak.anote.R;
 import in.izzulmak.anote.core.ModelMain;
+import in.izzulmak.anote.core.Util;
 
 public class ConsoleActivity extends AppCompatActivity {
 
@@ -55,7 +57,11 @@ public class ConsoleActivity extends AppCompatActivity {
             {
                 for (int i=0; i<dbv.getColumnCount(); i++)
                 {
-                    hasil += dbv.getString(i)+", ";
+                    try {
+                        hasil += dbv.getString(i) + ", ";
+                    } catch (SQLiteException e) {
+                        hasil += Util.bytesToHex(dbv.getBlob(i)) + ", ";
+                    }
                 }
                 hasil += "\n";
             }

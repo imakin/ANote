@@ -14,6 +14,8 @@ import javax.crypto.IllegalBlockSizeException;
 
 import in.izzulmak.anote.R;
 import in.izzulmak.anote.core.Algorithm;
+import in.izzulmak.anote.room.listmode.listeners.ItemChangedListener;
+import in.izzulmak.anote.room.listmode.listeners.PasswordChangedListener;
 
 public class ListModeActivity extends AppCompatActivity {
 
@@ -25,6 +27,8 @@ public class ListModeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_mode);
         listObject = new ListObject();
         ListModeModel.init(this);
+
+        ((EditText) findViewById(R.id.et_list_pasword)).addTextChangedListener(new PasswordChangedListener());
     }
 
     @Override
@@ -63,6 +67,10 @@ public class ListModeActivity extends AppCompatActivity {
             if (listItem.encryptedData!=null) {
                 try {
                     et_item.setText(Algorithm.decode(listItem.encryptedData).trim());
+                    if (listItem.encryptedJudge==null | (!Algorithm.decode(listItem.encryptedJudge).trim().equals("judge")))
+                        et_item.setBackgroundColor(0x0F440000);
+                    else
+                        et_item.setBackgroundColor(0x22005500);
                 } catch (IllegalBlockSizeException e) {
                     e.printStackTrace();
                 } catch (BadPaddingException e) {

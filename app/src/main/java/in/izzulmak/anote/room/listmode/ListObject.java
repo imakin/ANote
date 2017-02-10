@@ -17,8 +17,12 @@ public class ListObject {
     public byte[] encryptedData;
     /** raw data */
     public String data;
+    /** encrypted judge */
+    public byte[] encryptedJudge;
+    /** raw judge */
+    public final static String judge = "judge";
     /** view linked to this object */
-    View theView;
+    public View theView;
 
     /** next linkedlist ListObject */
     public ListObject next = null;
