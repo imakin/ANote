@@ -52,7 +52,7 @@ public class MainPlaceHolderFragment extends Fragment {
         int section = getArguments().getInt(ARG_SECTION_NUMBER);
         View rootView;
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
+        //mref.loadCustomButtons();
         return rootView;
     }
 

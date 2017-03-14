@@ -29,6 +29,7 @@ public class ListModeActivity extends AppCompatActivity {
         ListModeModel.init(this);
 
         ((EditText) findViewById(R.id.et_list_pasword)).addTextChangedListener(new PasswordChangedListener());
+        ListModeModel.load();
     }
 
     @Override

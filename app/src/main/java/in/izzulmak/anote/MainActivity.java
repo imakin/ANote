@@ -1,6 +1,12 @@
 package in.izzulmak.anote;
 
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.AvoidXfermode;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
@@ -10,13 +16,17 @@ import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.net.MalformedURLException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
 import in.izzulmak.anote.core.Algorithm;
 import in.izzulmak.anote.room.listmode.ListModeModel;
+import in.izzulmak.anote.room.main.CustomButton;
 import in.izzulmak.anote.room.main.MainPlaceHolderFragment;
 import in.izzulmak.anote.core.ModelMain;
 import in.izzulmak.anote.room.console.ConsoleActivity;
@@ -58,6 +68,17 @@ public class MainActivity extends AppCompatActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         ModelMain.initDatabase(this);
 
+        //Initialize DB
+        ModelMain.provisioningAddIfNotExist("custombutton", "urlaction buttontext", "urlaction", false, true);
+        ModelMain.provisioningApply();
+
+        //ugly, but it is Java. loadCustomButtons(); is in MainPlaceHolderFragment.onCreateView
+
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 
     @Override
@@ -129,46 +150,71 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    byte [] tempbuffer;
-    public void encrypt(View view) {
-        String data = ((EditText) findViewById(R.id.et_main_data)).
-                getText().toString();
 
+    public void addCutomButton(View view) {
+        loadCustomButtons();
+        AlertDialog.Builder inputPopupBuilder = new AlertDialog.Builder(this);
+        final EditText et_customButtonText = new EditText(this);
+        et_customButtonText.setHint("name your button");
+        inputPopupBuilder.setView(et_customButtonText);
+        inputPopupBuilder.setCancelable(true);
+        inputPopupBuilder.setPositiveButton("ok",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        EditText et_main_url = (EditText) findViewById(R.id.et_main_url);
+                        addCustomButton(
+                                et_main_url.getText().toString(),
+                                et_customButtonText.getText().toString()
+                        );
+                        saveCustomButton(
+                                et_main_url.getText().toString(),
+                                et_customButtonText.getText().toString()
+                        );
+                    }
+                });
+        AlertDialog inputPopup = inputPopupBuilder.create();
+        inputPopup.show();
+
+    }
+
+    public void addCustomButton(String urlaction, String customButtonText) {
+        LinearLayout ll_main = null;
+        ll_main = (LinearLayout) findViewById(R.id.ll_main);
 
         try {
-            tempbuffer = Algorithm.encode(data);
-            String display = "";
-            for (byte b:tempbuffer) {
-                display = display+String.format("%2x ",(int)(b&0xff));
-            }
-            ((TextView) findViewById(R.id.tv_main_print)).setText(display);
-
-        } catch (IllegalBlockSizeException e) {
-            ((TextView) findViewById(R.id.tv_main_print)).setText("failure");
+            CustomButton newbt = new CustomButton(ll_main.getContext(), urlaction);
+            newbt.setText(customButtonText);
+            ll_main.addView(newbt);
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+        //ll_main.addView();
     }
 
-    public void decrypt(View view) {
-        String password = ((EditText) findViewById(R.id.et_main_password)).
-                getText().toString();
-        ((TextView) findViewById(R.id.tv_main_print2)).setText("faipelure");
-        String display = null;
-        try {
-            display = Algorithm.decode(tempbuffer);
-            ((TextView) findViewById(R.id.tv_main_print2)).setText(display);
+    public void loadCustomButtons(){
+        Cursor c_buttons = ModelMain.getdb().rawQuery("select urlaction,buttontext from custombutton", null);
+        while (c_buttons.moveToNext()) {
+            addCustomButton(c_buttons.getString(0), c_buttons.getString(1));
         }
-        catch (IllegalBlockSizeException e) {e.printStackTrace();}
-        catch (BadPaddingException e) {e.printStackTrace();}
-
-
     }
 
-    public void setKey(View view) {
-        String password = ((EditText) findViewById(R.id.et_main_password)).
-                getText().toString();
-        Algorithm.setKey(password);
+    public void saveCustomButton(String urlaction, String customButtonText){
+        ModelMain.getdb().beginTransaction();
+        try {
+            ContentValues v = new ContentValues();
+            v.put("urlaction",urlaction);
+            v.put("buttontext", customButtonText);
+            ModelMain.getdb().insertOrThrow("custombutton", null, v);
+
+            ModelMain.getdb().setTransactionSuccessful();
+        } finally {
+            ModelMain.getdb().endTransaction();
+        }
     }
+
+
 
     /**
      * goto Console activity
